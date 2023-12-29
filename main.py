@@ -20,6 +20,11 @@ root.configure(bg = 'white', padx = 20, pady = 20)
 heading = tk.Label(root, text = "Selamat Datang", font = ('Arial', 16), padx = 8, pady = 4)
 heading.pack()
 
+def browse_image():
+  file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp")])
+  browse_image_entry.delete(0, tk.END)
+  browse_image_entry.insert(0, file_path)
+
 def is_image(file_path):
   image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp']
   return any(file_path.lower().endswith(ext) for ext in image_extensions)
@@ -40,12 +45,24 @@ def start_encode_mode():
   heading.config(text = "Encode Text to Picture")
   browse_image_button.pack(side = tk.TOP)
   browse_image_entry.pack(side = tk.TOP)
+  browse_image_entry.delete(0, tk.END)
   string_entry_label.pack(side = tk.TOP)
   string_entry.pack(side = tk.TOP)
+  string_entry.delete(0, tk.END)
   encode_button.pack(side = tk.TOP)
+  decode_button.forget()
+  decoded_string.forget()
 
 def start_decode_mode():
   heading.config(text = "Decode Text from Picture")
+  browse_image_button.pack(side = tk.TOP)
+  browse_image_entry.pack(side = tk.TOP)
+  browse_image_entry.delete(0, tk.END)
+  string_entry_label.forget()
+  string_entry.forget()
+  encode_button.forget()
+  decode_button.pack(side = tk.TOP)
+  decoded_string.pack(side = tk.TOP)
 
 def start_mix_mode():
   heading.config(text = "Mix Two Picture")
@@ -85,6 +102,8 @@ def encode():
       new_image.append(image_d[index])
 
   image.putdata(new_image)
+  print(new_image[0])
+
   now = datetime.now()
   ext = pathlib.Path(input_image).suffix
   filename = now.strftime("%m-%d-%Y-%H-%M-%S" + ext)
@@ -92,10 +111,26 @@ def encode():
   image.save("output/" + "encode/" + filename)
   heading.config(text = "Encode Success", fg = "green")
 
-def browse_image():
-  file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp")])
-  browse_image_entry.delete(0, tk.END)
-  browse_image_entry.insert(0, file_path)
+def decode():
+  input_image = browse_image_entry.get()
+
+  if input_image == "":
+    heading.config(text = "Please select an image", fg = "red")
+    return
+  
+  if is_image(input_image) == False:
+    heading.config(text = "This file is not an image", fg = "red")
+    return
+
+  image = Image.open(input_image, 'r')
+  image_d = image.getdata()
+  print(image_d[0])
+
+  res = str()
+  for x in range(image_d[0][2]):
+    res += (chr(image_d[x + 1][2]))
+
+  decoded_string.config(text = "Decoded string: " + res)
 
 menu_bar = tk.Menu(root)
 menu_bar.add_cascade(label = "Encode Text to Picture", command = start_encode_mode)
@@ -104,10 +139,12 @@ menu_bar.add_cascade(label = "Mix Two Picture", command = start_mix_mode)
 menu_bar.add_cascade(label = "Exit", command = root.quit)
 
 browse_image_button = tk.Button(root, text = "Browse Image", command = browse_image, font = ('Arial', 8), padx = 8, pady = 4)
-browse_image_entry = tk.Entry(root)
-string_entry = tk.Entry(root, text = "Write here", bg = 'white', fg = 'black', width = 40)
+browse_image_entry = tk.Entry(root, width = 64)
+string_entry = tk.Entry(root, text = "Write here", bg = 'white', fg = 'black', width = 64)
 string_entry_label = tk.Label(root, text = "Enter string to encode")
 encode_button = tk.Button(root, text = "Encode", command = encode, font = ('Arial', 8), padx = 8, pady = 4, bg = "green", fg = "white")
+decode_button = tk.Button(root, text = "Decode", command = decode, font = ('Arial', 8), padx = 8, pady = 4, bg = "blue", fg = "white")
+decoded_string = tk.Label(root, text = "Decoded string : ...")
 
 root.config(menu = menu_bar)
 root.mainloop()
