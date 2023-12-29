@@ -1,7 +1,6 @@
-from tkinter import *
-from tkinter import filedialog
+import tkinter as tk
 
-root = Tk()
+root = tk.Tk()
 root.state('zoomed')
 
 screen_width = root.winfo_screenwidth()
@@ -10,12 +9,29 @@ root.minsize(width = int(screen_width / 2), height = int(screen_height / 2))
 
 root.title("Project Akhir Steganografi oleh Hans")
 root.iconbitmap('assets/favicon.ico')
-root.configure(bg='white')
+root.configure(bg='white', padx=20, pady=20)
 
+heading = tk.Label(root, text="Selamat Datang", font = ('Arial', 20), padx = 20, pady = 10)
+heading.pack()
 
-menu = Menu(root)
-root.config(menu=menu)
-mode_menu = Menu(menu)
+def start_insert_mode():
+  heading.config(text="Insert Text to Picture")
+
+def start_mix_mode():
+  heading.config(text="Mix Two Picture")
+
+menu_bar = tk.Menu(root)
+menu_bar.add_cascade(label="Insert Text to Picture", command=start_insert_mode)
+menu_bar.add_cascade(label="Mix Two Picture", command=start_mix_mode)
+menu_bar.add_cascade(label="Exit", command=root.quit)
+
+root.config(menu=menu_bar)
+root.mainloop()
+
+# menu_bar.add_cascade(label="File", menu=file_menu)
+# menu = Menu(root)
+# root.config(menu=menu)
+# mode_menu = Menu(menu)
 # menu.add_cascade(label="Start Mode", menu=mode_menu)
 # mode_menu.add_command(label="Encryption", command=start_encryption_mode)
 # mode_menu.add_command(label="Decryption", command=start_decryption_mode)
@@ -50,5 +66,3 @@ mode_menu = Menu(menu)
 # key_hex_label = Label(root, text="", bg='lightblue', fg='black')
 
 # info_label = Label(root, text="", bg='lightblue', fg='black')
-
-root.mainloop()
