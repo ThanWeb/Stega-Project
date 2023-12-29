@@ -21,7 +21,7 @@ heading = tk.Label(root, text = "Selamat Datang", font = ('Arial', 16), padx = 8
 heading.pack()
 
 def browse_image():
-  file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp")])
+  file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.bmp")])
   browse_image_entry.delete(0, tk.END)
   browse_image_entry.insert(0, file_path)
 
