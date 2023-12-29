@@ -44,28 +44,29 @@ def write_image(file_path, folder_path):
 def start_encode_mode():
   heading.config(text = "Encode Text to Picture")
   browse_image_button.pack(side = tk.TOP)
+  browse_image_button.config(text = "Browse Image")
   browse_image_entry.pack(side = tk.TOP)
   browse_image_entry.delete(0, tk.END)
   string_entry_label.pack(side = tk.TOP)
   string_entry.pack(side = tk.TOP)
   string_entry.delete(0, tk.END)
   encode_button.pack(side = tk.TOP)
+
   decode_button.forget()
   decoded_string.forget()
 
 def start_decode_mode():
   heading.config(text = "Decode Text from Picture")
   browse_image_button.pack(side = tk.TOP)
+  browse_image_button.config(text = "Browse Image")
   browse_image_entry.pack(side = tk.TOP)
   browse_image_entry.delete(0, tk.END)
-  string_entry_label.forget()
-  string_entry.forget()
-  encode_button.forget()
   decode_button.pack(side = tk.TOP)
   decoded_string.pack(side = tk.TOP)
 
-def start_mix_mode():
-  heading.config(text = "Mix Two Picture")
+  string_entry_label.forget()
+  string_entry.forget()
+  encode_button.forget()
 
 def encode():
   input_image = browse_image_entry.get()
@@ -135,7 +136,6 @@ def decode():
 menu_bar = tk.Menu(root)
 menu_bar.add_cascade(label = "Encode Text to Picture", command = start_encode_mode)
 menu_bar.add_cascade(label = "Decode Text from Picture", command = start_decode_mode)
-menu_bar.add_cascade(label = "Mix Two Picture", command = start_mix_mode)
 menu_bar.add_cascade(label = "Exit", command = root.quit)
 
 browse_image_button = tk.Button(root, text = "Browse Image", command = browse_image, font = ('Arial', 8), padx = 8, pady = 4)
