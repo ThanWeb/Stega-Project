@@ -182,6 +182,10 @@ def distortion():
   cv2.imwrite("output/" + "distortion/" + filename, distorted_img)
   heading.config(text = "Distoriton Success", fg = "green")
 
+  cv2.imshow('Distorted Image', distorted_img)
+  cv2.waitKey(0)
+  cv2.destroyAllWindows()
+
 menu_bar = tk.Menu(root)
 menu_bar.add_cascade(label = "Encode Text to Image", command = start_encode_mode)
 menu_bar.add_cascade(label = "Decode Text from Image", command = start_decode_mode)
